@@ -2,22 +2,28 @@ import { LocationWeatherView } from "../Root/Root";
 import { useLoaderData } from "react-router-dom";
 
 export const LocationDetailLoader = async ({ params }) => {
-  const response = await fetch(
+  const geoLocationResponse = await fetch(
     `http://api.openweathermap.org/geo/1.0/direct?q=${params.locationName}&appid=d780a5117de2228e0d4e559b2dc0bd60`
   );
 
-  const GeoLocation = await response.json();
+  const geoLocation = await geoLocationResponse.json();
 
-  return { GeoLocation };
+  console.log(geoLocation);
+
+  const weatherDataResponse = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${geoLocation[0].lat}&lon=${geoLocation[0].lon}&appid=d780a5117de2228e0d4e559b2dc0bd60&units=metric`
+  );
+  const weatherData = await weatherDataResponse.json();
+
+  return weatherData;
 };
 
 const LocationDetail = () => {
-  const { GeoLocation } = useLoaderData();
-  const { lat, lon } = GeoLocation[0];
+  const weatherData = useLoaderData();
 
   return (
     <>
-      <LocationWeatherView lat={lat} lon={lon} />
+      <LocationWeatherView weatherData={weatherData} />
     </>
   );
 };
