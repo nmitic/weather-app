@@ -1,21 +1,28 @@
 import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow_left.svg";
 import { Link } from "react-router-dom";
 import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const LocationItem = ({ location }) => {
   const [weatherData, setWeatherData] = useState(null);
 
+  const fetchWeatherData = useCallback(async () => {
+    const weatherDataResponse = await fetch(
+      `http://localhost:3001/weather?q=${location}&units=metric`
+    );
+    const weatherData = await weatherDataResponse.json();
+
+    return weatherData;
+  }, []);
+
   useEffect(() => {
-    const fetchWeatherData = async () => {
-      const weatherDataResponse = await fetch(
-        `http://localhost:3001/weather?q=${location}&units=metric`
-      );
-      const weatherData = await weatherDataResponse.json();
+    fetchWeatherData()
+      .then((data) => setWeatherData(data))
+      .catch(console.error);
+  }, []);
 
-      return weatherData;
-    };
-
+  const handleRefresh = useCallback(async () => {
+    setWeatherData(null);
     fetchWeatherData()
       .then((data) => setWeatherData(data))
       .catch(console.error);
@@ -35,6 +42,14 @@ export const LocationItem = ({ location }) => {
         <div className="text-gray-600 text-2xl">{weatherData.temperature}</div>
       </div>
       <WeatherLogo />
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          handleRefresh();
+        }}
+      >
+        Refresh
+      </button>
     </Link>
   );
 };
