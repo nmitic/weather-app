@@ -9,7 +9,7 @@ export const LocationItem = ({ location }) => {
   useEffect(() => {
     const fetchWeatherData = async () => {
       const weatherDataResponse = await fetch(
-        `http://localhost:3001/weather/${location}`
+        `http://localhost:3001/weather?q=${location}&units=metric`
       );
       const weatherData = await weatherDataResponse.json();
 

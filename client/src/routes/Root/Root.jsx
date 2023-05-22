@@ -121,7 +121,7 @@ export const rootLoader = async () => {
   const position = await getPosition();
   const { latitude, longitude } = position.coords;
   const weatherDataResponse = await fetch(
-    `http://localhost:3001/weather?lat=${latitude}&lon=${longitude}`
+    `http://localhost:3001/weather?lat=${latitude}&lon=${longitude}&units=metric`
   );
   const weatherData = await weatherDataResponse.json();
 
@@ -130,10 +130,6 @@ export const rootLoader = async () => {
 
 const Root = () => {
   const weatherData = useLoaderData();
-  const navigation = useNavigation();
-  if (navigation.state === "loading") {
-    return <div>loading</div>;
-  }
 
   return <LocationWeatherView weatherData={weatherData} />;
 };

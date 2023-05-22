@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router-dom";
 
 export const LocationDetailLoader = async ({ params }) => {
   const weatherDataResponse = await fetch(
-    `http://localhost:3001/weather/${params.locationName}`
+    `http://localhost:3001/weather?q=${params.locationName}&units=metric`
   );
   const weatherData = await weatherDataResponse.json();
 
