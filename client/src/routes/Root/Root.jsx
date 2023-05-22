@@ -32,7 +32,7 @@ export const MainWeatherInfo = ({ temperature, icon: Icon, description }) => {
 
 export const MetaWeatherInfo = ({ wind, humidity, pressure }) => {
   return (
-    <section className="flex bg-white rounded-xl justify-around py-2">
+    <section className="flex bg-white rounded-xl justify-around py-2 mb-6">
       <div className="inline-flex flex-col items-center">
         <div className="text-gray-300 text-sm">Wind</div>
         <div className="text-base text-gray-600">{wind}</div>
@@ -52,15 +52,18 @@ export const MetaWeatherInfo = ({ wind, humidity, pressure }) => {
 export const CurrentDayForecast = ({ data }) => {
   return (
     <section>
-      {data.map((item) => {
-        return (
-          <div>
-            {item.time}
-            {item.icon}
-            {item.temperature}
-          </div>
-        );
-      })}
+      <div className="text-gray-300 text-sm">Today</div>
+      <div className="flex text-center overflow-scroll">
+        {data.map((item) => {
+          return (
+            <div>
+              {item.time}
+              <WeatherLogo />
+              {item.temperature}°
+            </div>
+          );
+        })}
+      </div>
     </section>
   );
 };
@@ -76,7 +79,23 @@ export const LocationWeatherView = ({ weatherData }) => {
       />
       <MetaWeatherInfo wind="20km/h" humidity="90%" pressure="1005 hPa" />
       <CurrentDayForecast
-        data={[{ time: "12:00", icon: "sun", temperature: "17" }]}
+        data={[
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+          { time: "12:00", icon: "sun", temperature: "17" },
+        ]}
       />
     </div>
   );
