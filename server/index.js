@@ -13,6 +13,9 @@ const ENDPOINTS = {
   CURRENT_WEATHER: function (lat, lon) {
     return `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_APP_ID}&units=metric`;
   },
+  FORECAST_WEATHER: function (lat, lon) {
+    return `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_APP_ID}&units=metric`;
+  },
 };
 const CLIENT_URL = "http://localhost:3000";
 
@@ -65,7 +68,7 @@ const serializeWeatherData = ({ main, sys, wind, weather, name }) => {
   return {
     city: name,
     country: sys.country,
-    temperature: `${main.temp}°`,
+    temperature: `${Math.round(main.temp, 10)}°`,
     humidity: `${main.humidity}%`,
     pressure: `${main.pressure}hPa`,
     wind: `${wind.speed}km/h`,

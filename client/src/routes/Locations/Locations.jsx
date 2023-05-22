@@ -1,16 +1,38 @@
 import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow_left.svg";
 import { Link } from "react-router-dom";
 import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
+import { useEffect, useState } from "react";
 
-export const LocationItem = ({ data }) => {
+export const LocationItem = ({ location }) => {
+  const [weatherData, setWeatherData] = useState(null);
+
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      const weatherDataResponse = await fetch(
+        `http://localhost:3001/weather/${location}`
+      );
+      const weatherData = await weatherDataResponse.json();
+
+      return weatherData;
+    };
+
+    fetchWeatherData()
+      .then((data) => setWeatherData(data))
+      .catch(console.error);
+  }, []);
+
+  if (!weatherData) {
+    return "loading";
+  }
+
   return (
-    <Link className="bg-white rounded-3xl p-4" to="/locations/lima">
+    <Link className="bg-white rounded-3xl p-4" to={`/locations/${location}`}>
       <div className="flex justify-between">
         <div className="inline-flex flex-col">
-          <span className="text-base text-gray-600">{data.city}</span>
-          <span className="text-gray-300 text-sm">{data.countryCode}</span>
+          <span className="text-base text-gray-600">{weatherData.city}</span>
+          <span className="text-gray-300 text-sm">{weatherData.country}</span>
         </div>
-        <div className="text-gray-600 text-2xl">{data.temperature}°</div>
+        <div className="text-gray-600 text-2xl">{weatherData.temperature}</div>
       </div>
       <WeatherLogo />
     </Link>
@@ -20,8 +42,8 @@ export const LocationItem = ({ data }) => {
 export const LocationsGridList = ({ data }) => {
   return (
     <section className="grid grid-cols-2 gap-4">
-      {data.map((locationData) => {
-        return <LocationItem data={locationData} />;
+      {data.map((location) => {
+        return <LocationItem location={location} />;
       })}
     </section>
   );
@@ -43,38 +65,7 @@ const Locations = () => {
     <div className="px-7">
       <LocationsHeader />
       <LocationsGridList
-        data={[
-          {
-            icon: "sun",
-            temperature: 18,
-            city: "Belgrade",
-            countryCode: "SRB",
-          },
-          {
-            icon: "sun",
-            temperature: 18,
-            city: "Belgrade",
-            countryCode: "SRB",
-          },
-          {
-            icon: "sun",
-            temperature: 18,
-            city: "Belgrade",
-            countryCode: "SRB",
-          },
-          {
-            icon: "sun",
-            temperature: 18,
-            city: "Belgrade",
-            countryCode: "SRB",
-          },
-          {
-            icon: "sun",
-            temperature: 18,
-            city: "Belgrade",
-            countryCode: "SRB",
-          },
-        ]}
+        data={["belgrade", "paris", "dubai", "perth", "lima"]}
       />
     </div>
   );
