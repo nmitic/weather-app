@@ -1,16 +1,15 @@
 import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
 import { ReactComponent as MenuIcon } from "../../icons/menu.svg";
 import { Link, useLoaderData } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 export const Header = ({ city, country, date }) => {
   return (
-    <header className="flex flex-row justify-between px-4 py-4">
+    <header className="flex flex-row justify-between px-4 py-4 mb-5">
       <div>
         <h1 className="text-gray-500">
           {city}, {country}
         </h1>
-        <h3 className=" text-gray-300 text-xs">{date}</h3>
+        <h3 className="text-gray-300 text-sm">{date}</h3>
       </div>
       <Link to="/locations">
         <MenuIcon />
@@ -21,20 +20,31 @@ export const Header = ({ city, country, date }) => {
 
 export const MainWeatherInfo = ({ temperature, icon: Icon, description }) => {
   return (
-    <section>
-      <Icon />
-      {temperature}
-      {description}
+    <section className="text-center mb-5">
+      <div className="h-60 relative overflow-hidden">
+        <Icon className="w-96 h-96 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+      </div>
+      <div className="text-gray-600 text-6xl">{temperature}°</div>
+      <div className="text-gray-600">{description}</div>
     </section>
   );
 };
 
 export const MetaWeatherInfo = ({ wind, humidity, pressure }) => {
   return (
-    <section>
-      {wind}
-      {humidity}
-      {pressure}
+    <section className="flex bg-white rounded-xl justify-around py-2">
+      <div className="inline-flex flex-col items-center">
+        <div className="text-gray-300 text-sm">Wind</div>
+        <div className="text-base text-gray-600">{wind}</div>
+      </div>
+      <div className="inline-flex flex-col items-center">
+        <div className="text-gray-300 text-sm">Humidity</div>
+        <div className="text-base text-gray-600">{humidity}</div>
+      </div>
+      <div className="inline-flex flex-col items-center">
+        <div className="text-gray-300 text-sm">Pressure</div>
+        <div className="text-base text-gray-600">{pressure}</div>
+      </div>
     </section>
   );
 };
@@ -56,16 +66,11 @@ export const CurrentDayForecast = ({ data }) => {
 };
 
 export const LocationWeatherView = ({ weatherData }) => {
-  console.log(weatherData);
   return (
-    <>
-      <Header
-        city={weatherData.name}
-        country={weatherData.sys.country}
-        date="Fri, 19 May"
-      />
+    <div className=" px-7">
+      <Header city={"Belgrade"} country={"Serbia"} date="Fri, 19 May" />
       <MainWeatherInfo
-        temperature={weatherData.main.temp}
+        temperature={18}
         icon={WeatherLogo}
         description="very much sunny"
       />
@@ -73,7 +78,7 @@ export const LocationWeatherView = ({ weatherData }) => {
       <CurrentDayForecast
         data={[{ time: "12:00", icon: "sun", temperature: "17" }]}
       />
-    </>
+    </div>
   );
 };
 
