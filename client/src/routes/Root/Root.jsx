@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "react-router-dom";
 
 export const Header = ({ city, country, date }) => {
   return (
-    <header className="flex flex-row justify-between px-4 py-4 mb-5">
+    <header className="flex flex-row justify-between py-4 mb-5">
       <div>
         <h1 className="text-gray-500">
           {city}, {country}
@@ -12,7 +12,7 @@ export const Header = ({ city, country, date }) => {
         <h3 className="text-gray-300 text-sm">{date}</h3>
       </div>
       <Link to="/locations">
-        <MenuIcon />
+        <MenuIcon className="stroke-gray-500" />
       </Link>
     </header>
   );
@@ -52,7 +52,7 @@ export const MetaWeatherInfo = ({ wind, humidity, pressure }) => {
 export const CurrentDayForecast = ({ data }) => {
   return (
     <section>
-      <div className="text-gray-300 text-sm">Today</div>
+      <div className="text-gray-300 text-sm mb-3">Today</div>
       <div className="flex text-center overflow-scroll">
         {data.map((item) => {
           return (
@@ -70,7 +70,7 @@ export const CurrentDayForecast = ({ data }) => {
 
 export const LocationWeatherView = ({ weatherData }) => {
   return (
-    <div className=" px-7">
+    <div className="px-7">
       <Header city={"Belgrade"} country={"Serbia"} date="Fri, 19 May" />
       <MainWeatherInfo
         temperature={18}
