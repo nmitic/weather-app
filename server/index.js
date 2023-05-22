@@ -29,25 +29,59 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.get("/weather/:location", async (req, res) => {
-  const geoLocationResponse = await fetch(
-    ENDPOINTS.GEO_LOC(req.params.location)
+/**
+ * @param { Promise } promise
+ * @param { Object } improved - If you need to enhance the error.
+ * @return { Promise }
+ */
+function to(promise, improved) {
+  return promise
+    .then((data) => [null, data])
+    .catch((err) => {
+      if (improved) {
+        Object.assign(err, improved);
+      }
+
+      return [err]; // which is same as [err, undefined];
+    });
+}
+
+app.get("/weather/:location", async (req, res, next) => {
+  const [geoLocationError, geoLocationResponse] = await to(
+    fetch(ENDPOINTS.GEO_LOC(req.params.location))
   );
+
+  if (geoLocationError) {
+    console.error(geoLocationError);
+    next(geoLocationError);
+  }
 
   const geoLocation = await geoLocationResponse.json();
 
-  const weatherDataResponse = await fetch(
-    ENDPOINTS.CURRENT_WEATHER(geoLocation[0].lat, geoLocation[0].lon)
+  const [weatherDataError, weatherDataResponse] = await to(
+    fetch(ENDPOINTS.CURRENT_WEATHER(geoLocation[0].lat, geoLocation[0].lon))
   );
+
+  if (weatherDataError) {
+    console.error(geoLocationError);
+    next(weatherDataError);
+  }
+
   const weatherData = await weatherDataResponse.json();
 
   res.json(weatherData);
 });
 
-app.get("/weather", async (req, res) => {
-  const weatherDataResponse = await fetch(
-    ENDPOINTS.CURRENT_WEATHER(req.query.lat, req.query.lon)
+app.get("/weather", async (req, res, next) => {
+  const [weatherDataError, weatherDataResponse] = await to(
+    fetch(ENDPOINTS.CURRENT_WEATHER(req.query.lat, req.query.lon))
   );
+
+  if (weatherDataError) {
+    console.error(geoLocationError);
+    next(weatherDataError);
+  }
+
   const weatherData = await weatherDataResponse.json();
 
   res.json(weatherData);
