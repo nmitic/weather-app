@@ -1,6 +1,6 @@
 import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
 import { ReactComponent as MenuIcon } from "../../icons/menu.svg";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigation } from "react-router-dom";
 
 export const Header = ({ city, country, date }) => {
   return (
@@ -24,7 +24,7 @@ export const MainWeatherInfo = ({ temperature, icon: Icon, description }) => {
       <div className="h-60 relative overflow-hidden">
         <Icon className="w-96 h-96 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
       </div>
-      <div className="text-gray-600 text-6xl">{temperature}°</div>
+      <div className="text-gray-600 text-6xl">{temperature}</div>
       <div className="text-gray-600">{description}</div>
     </section>
   );
@@ -68,16 +68,26 @@ export const CurrentDayForecast = ({ data }) => {
   );
 };
 
-export const LocationWeatherView = ({ weatherData }) => {
+export const LocationWeatherView = ({
+  weatherData: {
+    city,
+    country,
+    temperature,
+    description,
+    wind,
+    pressure,
+    humidity,
+  },
+}) => {
   return (
     <div className="px-7">
-      <Header city={"Belgrade"} country={"Serbia"} date="Fri, 19 May" />
+      <Header city={city} country={country} date="Fri, 19 May" />
       <MainWeatherInfo
-        temperature={18}
+        temperature={temperature}
         icon={WeatherLogo}
-        description="very much sunny"
+        description={description}
       />
-      <MetaWeatherInfo wind="20km/h" humidity="90%" pressure="1005 hPa" />
+      <MetaWeatherInfo wind={wind} humidity={humidity} pressure={pressure} />
       <CurrentDayForecast
         data={[
           { time: "12:00", icon: "sun", temperature: "17" },
@@ -111,7 +121,7 @@ export const rootLoader = async () => {
   const position = await getPosition();
   const { latitude, longitude } = position.coords;
   const weatherDataResponse = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=d780a5117de2228e0d4e559b2dc0bd60&units=metric`
+    `http://localhost:3001/weather?lat=${latitude}&lon=${longitude}`
   );
   const weatherData = await weatherDataResponse.json();
 
@@ -120,6 +130,10 @@ export const rootLoader = async () => {
 
 const Root = () => {
   const weatherData = useLoaderData();
+  const navigation = useNavigation();
+  if (navigation.state === "loading") {
+    return <div>loading</div>;
+  }
 
   return <LocationWeatherView weatherData={weatherData} />;
 };

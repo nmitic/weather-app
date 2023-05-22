@@ -46,6 +46,33 @@ function to(promise, improved) {
     });
 }
 
+/**
+ *
+ * {
+ * city,
+ * country,
+ * temperature,
+ * description,
+ * wind,
+ * humudity,
+ * pressure,
+ * [{time, temp, desc}]
+ * }
+ *
+ */
+
+const serializeWeatherData = ({ main, sys, wind, weather, name }) => {
+  return {
+    city: name,
+    country: sys.country,
+    temperature: `${main.temp}°`,
+    humidity: `${main.humidity}%`,
+    pressure: `${main.pressure}hPa`,
+    wind: `${wind.speed}km/h`,
+    description: weather.description,
+  };
+};
+
 app.get("/weather/:location", async (req, res, next) => {
   const [geoLocationError, geoLocationResponse] = await to(
     fetch(ENDPOINTS.GEO_LOC(req.params.location))
@@ -68,8 +95,9 @@ app.get("/weather/:location", async (req, res, next) => {
   }
 
   const weatherData = await weatherDataResponse.json();
+  const serializedWeatherData = serializeWeatherData(weatherData);
 
-  res.json(weatherData);
+  res.json(serializedWeatherData);
 });
 
 app.get("/weather", async (req, res, next) => {
@@ -83,8 +111,9 @@ app.get("/weather", async (req, res, next) => {
   }
 
   const weatherData = await weatherDataResponse.json();
+  const serializedWeatherData = serializeWeatherData(weatherData);
 
-  res.json(weatherData);
+  res.json(serializedWeatherData);
 });
 
 app.listen(PORT, () => {

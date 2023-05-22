@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <div>error</div>,
-    // loader: rootLoader,
+    loader: rootLoader,
   },
   {
     path: "/locations",
