@@ -1,5 +1,6 @@
 import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow_left.svg";
 import { ReactComponent as RefreshIcon } from "../../icons/refresh.svg";
+import { ReactComponent as AddIcon } from "../../icons/add.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
 import { useCallback, useEffect, useState } from "react";
@@ -50,7 +51,10 @@ export const LocationItem = ({ location }) => {
   }
 
   return (
-    <Link className="bg-white rounded-3xl p-4" to={`/locations/${location}`}>
+    <Link
+      className="bg-white rounded-3xl p-4 min-h-[160px]"
+      to={`/locations/${location}`}
+    >
       <div className="flex justify-between">
         <div className="inline-flex flex-col">
           <span className="text-base text-gray-600">{weatherData.city}</span>
@@ -73,12 +77,57 @@ export const LocationItem = ({ location }) => {
   );
 };
 
-export const LocationsGridList = ({ data }) => {
+export const AddNewLocationItem = ({ onAddNewLocation }) => {
+  const [inputShow, setInputShown] = useState(false);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    onAddNewLocation(e.target.elements.location.value);
+    setInputShown(false);
+  };
+
+  const handleInputShow = () => {
+    setInputShown(true);
+  };
+
+  return (
+    <button
+      className="bg-white rounded-3xl p-4 text-left flex flex-col justify-between min-h-[160px]"
+      onClick={() => handleInputShow()}
+    >
+      <div className="text-gray-300 text-sm">ADD NEW LOCATION</div>
+      {inputShow ? (
+        <>
+          <form onSubmit={handleFormSubmit} className=" inline-flex w-full">
+            <input
+              autoFocus
+              type="text"
+              name="location"
+              className=" mr-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+            <button type="submit">
+              <AddIcon className="w-10 h-10 stroke-gray-500" />
+            </button>
+          </form>
+        </>
+      ) : (
+        <AddIcon className=" w-20 h-20 stroke-gray-500" />
+      )}
+    </button>
+  );
+};
+
+export const LocationsGridList = ({ data, setSavedLocations }) => {
   return (
     <section className="grid grid-cols-2 gap-4">
       {data.map((location) => {
         return <LocationItem location={location} />;
       })}
+      <AddNewLocationItem
+        onAddNewLocation={(newLocation) =>
+          setSavedLocations([...data, newLocation])
+        }
+      />
     </section>
   );
 };
@@ -98,11 +147,13 @@ export const LocationsHeader = () => {
 };
 
 const Locations = () => {
+  const [savedLocations, setSavedLocations] = useState(["belgrade"]);
   return (
     <div className="px-7">
       <LocationsHeader />
       <LocationsGridList
-        data={["belgrade", "paris", "dubai", "perth", "lima"]}
+        data={savedLocations}
+        setSavedLocations={setSavedLocations}
       />
     </div>
   );
