@@ -1,6 +1,6 @@
 import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow_left.svg";
 import { ReactComponent as RefreshIcon } from "../../icons/refresh.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
 import { useCallback, useEffect, useState } from "react";
 
@@ -84,12 +84,15 @@ export const LocationsGridList = ({ data }) => {
 };
 
 export const LocationsHeader = () => {
+  const navigate = useNavigate();
   return (
     <header className="flex flex-row justify-between py-4 mb-5">
       <h1 className="text-gray-500">Saved Locations</h1>
-      <Link to="/">
-        <ArrowLeftIcon className="stroke-gray-500" />
-      </Link>
+      <>
+        <button onClick={() => navigate(-1)}>
+          <ArrowLeftIcon className="stroke-gray-500" />
+        </button>
+      </>
     </header>
   );
 };
