@@ -1,4 +1,5 @@
 import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow_left.svg";
+import { ReactComponent as RefreshIcon } from "../../icons/refresh.svg";
 import { Link } from "react-router-dom";
 import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
 import { useCallback, useEffect, useState } from "react";
@@ -29,7 +30,23 @@ export const LocationItem = ({ location }) => {
   }, []);
 
   if (!weatherData) {
-    return "loading";
+    return (
+      <div className="bg-white rounded-3xl p-4">
+        <div className="flex justify-between">
+          <div className="inline-flex flex-col">
+            <span className="bg-gray-200 animate-pulse rounded-md h-5 w-32 mb-2" />
+            <span className="bg-gray-200 animate-pulse rounded-md h-5 w-20" />
+          </div>
+          <div className="bg-gray-200 w-10 h-10 animate-pulse rounded-md" />
+        </div>
+        <div className="bg-gray-200 animate-pulse rounded-md h-8 w-8 mt-5" />
+        <div className="flex justify-end">
+          <button disabled>
+            <RefreshIcon className="stroke-gray-500" />
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -42,14 +59,16 @@ export const LocationItem = ({ location }) => {
         <div className="text-gray-600 text-2xl">{weatherData.temperature}</div>
       </div>
       <WeatherLogo />
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          handleRefresh();
-        }}
-      >
-        Refresh
-      </button>
+      <div className="flex justify-end">
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            handleRefresh();
+          }}
+        >
+          <RefreshIcon className="stroke-gray-500" />
+        </button>
+      </div>
     </Link>
   );
 };
