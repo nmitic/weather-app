@@ -91,9 +91,11 @@ export const AddNewLocationItem = ({ onAddNewLocation }) => {
   };
 
   return (
-    <button
+    <div
       className="bg-white rounded-3xl p-4 text-left flex flex-col justify-between min-h-[160px]"
       onClick={() => handleInputShow()}
+      role="button"
+      tabIndex="0"
     >
       <div className="text-gray-300 text-sm">ADD NEW LOCATION</div>
       {inputShow ? (
@@ -113,7 +115,7 @@ export const AddNewLocationItem = ({ onAddNewLocation }) => {
       ) : (
         <AddIcon className=" w-20 h-20 stroke-gray-500" />
       )}
-    </button>
+    </div>
   );
 };
 
