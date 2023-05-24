@@ -490,13 +490,13 @@ export const Clear = (props) => {
       </defs>
       <g filter="url(#blur)" id="day">
         <g transform="translate(32,32)">
-          <g class="am-weather-sun am-weather-sun-shiny am-weather-easing-ease-in-out">
+          <g className="am-weather-sun am-weather-sun-shiny am-weather-easing-ease-in-out">
             <g>
               <line
                 fill="none"
                 stroke="orange"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
                 transform="translate(0,9)"
                 x1="0"
                 x2="0"
@@ -508,8 +508,8 @@ export const Clear = (props) => {
               <line
                 fill="none"
                 stroke="orange"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
                 transform="translate(0,9)"
                 x1="0"
                 x2="0"
@@ -521,8 +521,8 @@ export const Clear = (props) => {
               <line
                 fill="none"
                 stroke="orange"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
                 transform="translate(0,9)"
                 x1="0"
                 x2="0"
@@ -534,8 +534,8 @@ export const Clear = (props) => {
               <line
                 fill="none"
                 stroke="orange"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
                 transform="translate(0,9)"
                 x1="0"
                 x2="0"
@@ -547,8 +547,8 @@ export const Clear = (props) => {
               <line
                 fill="none"
                 stroke="orange"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
                 transform="translate(0,9)"
                 x1="0"
                 x2="0"
@@ -560,8 +560,8 @@ export const Clear = (props) => {
               <line
                 fill="none"
                 stroke="orange"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
                 transform="translate(0,9)"
                 x1="0"
                 x2="0"
@@ -573,8 +573,8 @@ export const Clear = (props) => {
               <line
                 fill="none"
                 stroke="orange"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
                 transform="translate(0,9)"
                 x1="0"
                 x2="0"
@@ -586,8 +586,8 @@ export const Clear = (props) => {
               <line
                 fill="none"
                 stroke="orange"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
                 transform="translate(0,9)"
                 x1="0"
                 x2="0"
@@ -602,7 +602,7 @@ export const Clear = (props) => {
             fill="orange"
             r="5"
             stroke="orange"
-            stroke-width="2"
+            strokeWidth="2"
           />
         </g>
       </g>

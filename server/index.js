@@ -45,6 +45,8 @@ app.use(cors(corsOptions));
  */
 
 const serializeWeatherData = ({ main, sys, wind, weather, name }) => {
+  const currentDate = new Date();
+
   return {
     city: name,
     country: sys.country,
@@ -54,6 +56,11 @@ const serializeWeatherData = ({ main, sys, wind, weather, name }) => {
     wind: `${wind.speed}km/h`,
     description: weather[0].description,
     main: weather[0].main,
+    date: currentDate.toLocaleString("en-US", {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+    }),
   };
 };
 
