@@ -1,6 +1,31 @@
 import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
 import { ReactComponent as MenuIcon } from "../../icons/menu.svg";
-import { Link, useLoaderData, useNavigation } from "react-router-dom";
+import { Clear } from "../../icons/weather_icons/animated/clear";
+import { Clouds } from "../../icons/weather_icons/animated/cloudy";
+import { Thunderstorm } from "../../icons/weather_icons/animated/thunder";
+import { Snow } from "../../icons/weather_icons/animated/snow";
+import { Rain } from "../../icons/weather_icons/animated/rain";
+
+import { Link, useLoaderData } from "react-router-dom";
+
+export const DESC_TO_ICON_MAP = {
+  Thunderstorm,
+  Rain,
+  Snow,
+  Clear,
+  Clouds,
+  // Setting default to sun for the rest of the mapping as I am missing assets for it
+  Mist: Clear,
+  Tornado: Clear,
+  Drizzle: Clear,
+  Smoke: Clear,
+  Haze: Clear,
+  Dust: Clear,
+  Fog: Clear,
+  Sand: Clear,
+  Ash: Clear,
+  Squall: Clear,
+};
 
 export const Header = ({ city, country, date }) => {
   return (
@@ -21,11 +46,11 @@ export const Header = ({ city, country, date }) => {
 export const MainWeatherInfo = ({ temperature, icon: Icon, description }) => {
   return (
     <section className="text-center mb-5">
-      <div className="h-60 relative overflow-hidden">
+      <div className="h-60 relative">
         <Icon className="w-96 h-96 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
       </div>
-      <div className="text-gray-600 text-6xl">{temperature}</div>
-      <div className="text-gray-600">{description}</div>
+      <div className="text-gray-600 text-6xl mb-4">{temperature}</div>
+      <div className="text-gray-600 text-2xl">{description}</div>
     </section>
   );
 };
@@ -77,14 +102,18 @@ export const LocationWeatherView = ({
     wind,
     pressure,
     humidity,
+    main,
   },
 }) => {
+  const mainWeatherInfoIcon = DESC_TO_ICON_MAP[main]
+    ? DESC_TO_ICON_MAP[main]
+    : Clear;
   return (
-    <div className="px-7">
+    <div className="px-7 max-w-3xl m-auto">
       <Header city={city} country={country} date="Fri, 19 May" />
       <MainWeatherInfo
         temperature={temperature}
-        icon={WeatherLogo}
+        icon={mainWeatherInfoIcon}
         description={description}
       />
       <MetaWeatherInfo wind={wind} humidity={humidity} pressure={pressure} />
@@ -130,6 +159,7 @@ export const rootLoader = async () => {
 
 const Root = () => {
   const weatherData = useLoaderData();
+  console.log({ weatherData });
 
   return <LocationWeatherView weatherData={weatherData} />;
 };

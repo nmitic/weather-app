@@ -149,7 +149,7 @@ export const LocationsHeader = () => {
 const Locations = () => {
   const [savedLocations, setSavedLocations] = useState(["belgrade"]);
   return (
-    <div className="px-7">
+    <div className="px-7 max-w-3xl m-auto">
       <LocationsHeader />
       <LocationsGridList
         data={savedLocations}

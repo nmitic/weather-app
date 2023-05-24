@@ -52,7 +52,8 @@ const serializeWeatherData = ({ main, sys, wind, weather, name }) => {
     humidity: `${main.humidity}%`,
     pressure: `${main.pressure}hPa`,
     wind: `${wind.speed}km/h`,
-    description: weather.description,
+    description: weather[0].description,
+    main: weather[0].main,
   };
 };
 
