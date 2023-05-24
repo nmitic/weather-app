@@ -66,12 +66,21 @@ const serializeWeatherData = ({ main, sys, wind, weather, name }) => {
 
 app.get("/weather", async (req, res, next) => {
   const qs = new URLSearchParams(req.query);
-  const weatherDataResponse = await fetch(ENDPOINTS.WEATHER(qs.toString()));
 
-  const weatherData = await weatherDataResponse.json();
-  const serializedWeatherData = serializeWeatherData(weatherData);
-
-  res.json(serializedWeatherData);
+  try {
+    const weatherDataResponse = await fetch(ENDPOINTS.WEATHER(qs.toString()));
+    const weatherData = await weatherDataResponse.json();
+    if (weatherData.cod === 200) {
+      const serializedWeatherData = serializeWeatherData(weatherData);
+      res.json(serializedWeatherData);
+    } else {
+      res
+        .status(parseInt(weatherData.cod))
+        .json({ error: weatherData.message });
+    }
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.listen(PORT, () => {
