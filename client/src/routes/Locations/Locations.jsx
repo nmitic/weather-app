@@ -1,11 +1,12 @@
 import { ReactComponent as ArrowLeftIcon } from "../../icons/arrow_left.svg";
 import { ReactComponent as RefreshIcon } from "../../icons/refresh.svg";
 import { ReactComponent as AddIcon } from "../../icons/add.svg";
+import { ReactComponent as RemoveIcon } from "../../icons/remove.svg";
+import { DESC_TO_ICON_MAP } from "../Root/Root";
 import { Link, useNavigate } from "react-router-dom";
-import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
 import { useCallback, useEffect, useState } from "react";
 
-export const LocationItem = ({ location }) => {
+export const LocationItem = ({ location, handleRemove }) => {
   const [weatherData, setWeatherData] = useState(null);
 
   const fetchWeatherData = useCallback(async () => {
@@ -43,12 +44,19 @@ export const LocationItem = ({ location }) => {
         <div className="bg-gray-200 animate-pulse rounded-md h-8 w-8 mt-5" />
         <div className="flex justify-end">
           <button disabled>
+            <RemoveIcon className="stroke-gray-500 mr-3" />
+          </button>
+          <button disabled>
             <RefreshIcon className="stroke-gray-500" />
           </button>
         </div>
       </div>
     );
   }
+
+  const WeatherIcon = DESC_TO_ICON_MAP[weatherData.main]
+    ? DESC_TO_ICON_MAP[weatherData.main]
+    : DESC_TO_ICON_MAP["Clear"];
 
   return (
     <Link
@@ -62,8 +70,16 @@ export const LocationItem = ({ location }) => {
         </div>
         <div className="text-gray-600 text-2xl">{weatherData.temperature}</div>
       </div>
-      <WeatherLogo />
+      <WeatherIcon />
       <div className="flex justify-end">
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            handleRemove(location);
+          }}
+        >
+          <RemoveIcon className="stroke-gray-500 mr-3" />
+        </button>
         <button
           onClick={(e) => {
             e.preventDefault();
@@ -119,11 +135,15 @@ export const AddNewLocationItem = ({ onAddNewLocation }) => {
   );
 };
 
-export const LocationsGridList = ({ data, setSavedLocations }) => {
+export const LocationsGridList = ({
+  data,
+  setSavedLocations,
+  handleRemove,
+}) => {
   return (
     <section className="grid grid-cols-2 gap-4">
       {data.map((location) => {
-        return <LocationItem location={location} />;
+        return <LocationItem location={location} handleRemove={handleRemove} />;
       })}
       <AddNewLocationItem
         onAddNewLocation={(newLocation) =>
@@ -175,12 +195,18 @@ const Locations = () => {
     "saveLocations",
     []
   );
+
+  const handleRemove = (location) => {
+    setSavedLocations(savedLocations.filter((item) => item !== location));
+  };
+
   return (
     <div className="px-7 max-w-3xl m-auto">
       <LocationsHeader />
       <LocationsGridList
         data={savedLocations}
         setSavedLocations={setSavedLocations}
+        handleRemove={handleRemove}
       />
     </div>
   );
