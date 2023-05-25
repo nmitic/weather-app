@@ -1,4 +1,3 @@
-import { ReactComponent as WeatherLogo } from "../../icons/weather_icons/static/cloudy-day-2.svg";
 import { ReactComponent as MenuIcon } from "../../icons/menu.svg";
 import { Clear } from "../../icons/weather_icons/animated/clear";
 import { Clouds } from "../../icons/weather_icons/animated/cloudy";
@@ -7,7 +6,7 @@ import { Snow } from "../../icons/weather_icons/animated/snow";
 import { Rain } from "../../icons/weather_icons/animated/rain";
 
 import { Link, useLoaderData } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const DESC_TO_ICON_MAP = {
   Thunderstorm,
@@ -101,17 +100,17 @@ export const DayForecast = ({ day, forecastList }) => {
 export const Forecast = ({ location }) => {
   const [forecastData, setForecastData] = useState({});
 
-  const fetchForecast = async () => {
+  const fetchForecast = useCallback(async () => {
     const forecastResponse = await fetch(
       `http://localhost:3001/forecast?q=${location}&units=metric`
     );
     const forecastResponseData = await forecastResponse.json();
     setForecastData(forecastResponseData);
-  };
+  }, [location]);
 
   useEffect(() => {
     fetchForecast();
-  }, []);
+  }, [fetchForecast]);
 
   if (!forecastData) {
     return undefined;
