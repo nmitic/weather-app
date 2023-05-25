@@ -1,4 +1,4 @@
-import { json, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { LocationWeatherView } from "../../components/LocationWeatherView/LocationWeatherView";
 
 const getPosition = () => {
