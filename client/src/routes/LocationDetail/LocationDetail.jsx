@@ -1,5 +1,5 @@
-import { LocationWeatherView } from "../Root/Root";
 import { useLoaderData } from "react-router-dom";
+import { LocationWeatherView } from "../../components/LocationWeatherView/LocationWeatherView";
 
 export const LocationDetailLoader = async ({ params }) => {
   const weatherDataResponse = await fetch(
