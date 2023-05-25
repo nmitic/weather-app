@@ -153,7 +153,7 @@ export const LocationItem = ({
 
   return (
     <Link
-      className="bg-white rounded-3xl p-4 min-h-[160px]"
+      className="bg-white rounded-3xl p-4 min-h-[160px] hover:scale-125 transition-transform"
       to={`/locations/${location.name}`}
     >
       <div className="flex justify-between">
