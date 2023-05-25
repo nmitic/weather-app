@@ -77,7 +77,7 @@ export const MetaWeatherInfo = ({ wind, humidity, pressure }) => {
 
 export const DayForecast = ({ day, forecastList }) => {
   return (
-    <section>
+    <section className=" mb-16">
       <div className="text-gray-300 text-sm mb-3">{day}</div>
       <div className="flex text-center overflow-scroll">
         {forecastList.map((item) => {
@@ -86,9 +86,9 @@ export const DayForecast = ({ day, forecastList }) => {
             : Clear;
 
           return (
-            <div>
-              {item.time}
-              <WeatherIcon />
+            <div className="mr-2">
+              {item.hour}
+              <WeatherIcon className=" w-20 h-20" />
               {item.temperature}°
             </div>
           );
@@ -114,7 +114,7 @@ export const Forecast = ({ location }) => {
   }, []);
 
   if (!forecastData) {
-    return "...loading";
+    return undefined;
   }
 
   return (
