@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { json, useLoaderData } from "react-router-dom";
 import { LocationWeatherView } from "../../components/LocationWeatherView/LocationWeatherView";
 
 const getPosition = () => {
@@ -10,12 +10,17 @@ const getPosition = () => {
 export const rootLoader = async () => {
   const position = await getPosition();
   const { latitude, longitude } = position.coords;
-  const weatherDataResponse = await fetch(
-    `http://localhost:3001/weather?lat=${latitude}&lon=${longitude}&units=metric`
-  );
-  const weatherData = await weatherDataResponse.json();
+  try {
+    const weatherDataResponse = await fetch(
+      `http://localhost:3001/weather?lat=${latitude}&lon=${longitude}&units=metric`
+    );
 
-  return weatherData;
+    const weatherData = await weatherDataResponse.json();
+
+    return weatherData;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const Root = () => {

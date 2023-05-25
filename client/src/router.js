@@ -4,23 +4,24 @@ import Root from "./routes/Root/Root";
 import LocationDetail from "./routes/LocationDetail/LocationDetail";
 import { LocationDetailLoader } from "./routes/LocationDetail/LocationDetail";
 import { rootLoader } from "./routes/Root/Root";
+import { ErrorView } from "./components/ErrorView";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <div>error</div>,
+    errorElement: <ErrorView />,
     loader: rootLoader,
   },
   {
     path: "/locations",
     element: <Locations />,
-    errorElement: <div>error</div>,
+    errorElement: <ErrorView />,
   },
   {
     path: "/locations/:locationName",
     element: <LocationDetail />,
-    errorElement: <div>error</div>,
+    errorElement: <ErrorView />,
     loader: LocationDetailLoader,
   },
 ]);

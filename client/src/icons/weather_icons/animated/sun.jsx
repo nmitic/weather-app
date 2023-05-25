@@ -490,7 +490,7 @@ export const Sun = (props) => {
       </defs>
       <g filter="url(#blur)" id="day">
         <g transform="translate(32,32)">
-          <g class="am-weather-sun am-weather-sun-shiny am-weather-easing-ease-in-out">
+          <g className="am-weather-sun am-weather-sun-shiny am-weather-easing-ease-in-out">
             <g>
               <line
                 fill="none"
