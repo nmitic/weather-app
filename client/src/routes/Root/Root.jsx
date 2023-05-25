@@ -7,6 +7,7 @@ import { Snow } from "../../icons/weather_icons/animated/snow";
 import { Rain } from "../../icons/weather_icons/animated/rain";
 
 import { Link, useLoaderData } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export const DESC_TO_ICON_MAP = {
   Thunderstorm,
@@ -74,21 +75,53 @@ export const MetaWeatherInfo = ({ wind, humidity, pressure }) => {
   );
 };
 
-export const CurrentDayForecast = ({ data }) => {
+export const DayForecast = ({ day, forecastList }) => {
   return (
     <section>
-      <div className="text-gray-300 text-sm mb-3">Today</div>
+      <div className="text-gray-300 text-sm mb-3">{day}</div>
       <div className="flex text-center overflow-scroll">
-        {data.map((item) => {
+        {forecastList.map((item) => {
+          const WeatherIcon = DESC_TO_ICON_MAP[item.main]
+            ? DESC_TO_ICON_MAP[item.main]
+            : Clear;
+
           return (
             <div>
               {item.time}
-              <WeatherLogo />
+              <WeatherIcon />
               {item.temperature}°
             </div>
           );
         })}
       </div>
+    </section>
+  );
+};
+
+export const Forecast = ({ location }) => {
+  const [forecastData, setForecastData] = useState({});
+
+  const fetchForecast = async () => {
+    const forecastResponse = await fetch(
+      `http://localhost:3001/forecast?q=${location}&units=metric`
+    );
+    const forecastResponseData = await forecastResponse.json();
+    setForecastData(forecastResponseData);
+  };
+
+  useEffect(() => {
+    fetchForecast();
+  }, []);
+
+  if (!forecastData) {
+    return "...loading";
+  }
+
+  return (
+    <section>
+      {Object.keys(forecastData).map((key) => {
+        return <DayForecast day={key} forecastList={forecastData[key]} />;
+      })}
     </section>
   );
 };
@@ -118,25 +151,7 @@ export const LocationWeatherView = ({
         description={description}
       />
       <MetaWeatherInfo wind={wind} humidity={humidity} pressure={pressure} />
-      <CurrentDayForecast
-        data={[
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-          { time: "12:00", icon: "sun", temperature: "17" },
-        ]}
-      />
+      <Forecast location={city} />
     </div>
   );
 };
@@ -160,7 +175,6 @@ export const rootLoader = async () => {
 
 const Root = () => {
   const weatherData = useLoaderData();
-  console.log({ weatherData });
 
   return <LocationWeatherView weatherData={weatherData} />;
 };
