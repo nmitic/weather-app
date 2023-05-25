@@ -30,7 +30,7 @@ export const DESC_TO_ICON_MAP = {
 
 export const Header = ({ city, country, date }) => {
   return (
-    <header className="flex flex-row justify-between py-4 mb-5">
+    <header className="flex flex-row justify-between py-4 mb-5 relative z-50">
       <div>
         <h1 className="text-gray-500">
           {city}, {country}
