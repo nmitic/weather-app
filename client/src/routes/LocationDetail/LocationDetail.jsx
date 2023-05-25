@@ -17,11 +17,7 @@ export const LocationDetailLoader = async ({ params }) => {
 const LocationDetail = () => {
   const weatherData = useLoaderData();
 
-  return (
-    <>
-      <LocationWeatherView weatherData={weatherData} />
-    </>
-  );
+  return <LocationWeatherView weatherData={weatherData} />;
 };
 
 export default LocationDetail;
