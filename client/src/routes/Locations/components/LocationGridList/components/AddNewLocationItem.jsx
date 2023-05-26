@@ -28,8 +28,13 @@ export const AddNewLocationItem = ({ setSavedLocations, savedLocations }) => {
       <div className="text-gray-300 text-sm">ADD NEW LOCATION</div>
       {inputShow ? (
         <>
-          <form onSubmit={handleFormSubmit} className=" inline-flex w-full">
+          <form
+            onSubmit={handleFormSubmit}
+            className=" inline-flex w-full"
+            data-testid="form"
+          >
             <input
+              data-testid="input"
               autoFocus
               type="text"
               name="location"

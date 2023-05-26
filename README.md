@@ -34,10 +34,12 @@ It has very well documented API and it is free, however it does return more than
 
 What would I do differently if this is to go live?
 
-- Use TS to add type safety
+- Use TS to add type safety (or at least using react run time type checking )
 - Use fetching libs like `react query` or `react swr` or `RTK Query`
 - Use `css modules` with `scss` support instead of `tailwind`
 - Standardized the way errors are handled across the app
 - Have more appropriate weather data as free tier of openWeather is not great
 - Refactor the `locationGridList` not to rely on clint side unique ID
+- Refactor the `locationItem` to have more separation between the UI and render logic so that it can be tested
 - Unit test core functionality such as `data transforms` under `/server` and UI components with heavy render logic such as `LocationItem`, `addNewLocationItem` and `react router loaders`
+- Use shared layout for all pages so that I can make ues of react router `loading state` and show the users loading indicator
