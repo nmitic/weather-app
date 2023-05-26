@@ -29,8 +29,18 @@ React is my personal preference as at the moment I find myself the most producti
 Why Tailwind?
 Because of the rapid prototyping abilities.
 
+Why Express JS?
+I needed a way to hide OpenWeather API key. No matter how it is done on the client, it will always be exposed. This server is doing two things:
+
+- proxying requests to openWeather.
+- Serialize that data in a way that is as simple as possible to parse on the UI.
+
 Why OpenWeather?
 It has very well documented API and it is free, however it does return more than you need and you are also forced to make multiple request to get all the data needed.
+Please be aware that OpenWeather API has 85% up time, in case you are getting 404 pages please wait a bit and to make sure you can always check `/server` routes like so:
+
+- `http://localhost:3001/weather?q=${someLocationName}&units=metric`
+- `http://localhost:3001/forecast?q=${someLocationName}&units=metric`
 
 What would I do differently if this is to go live?
 
