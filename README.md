@@ -57,3 +57,4 @@ Please be aware that OpenWeather API has 85% up time, in case you are getting 40
 - Refactor the`locationItem` to have more separation between the UI and render logic so that it can be tested
 - Unit test core functionality such as`data transforms` under`/server` and UI components with heavy render logic such as`LocationItem`,`addNewLocationItem` and`react router loaders`
 - Use shared layout for all pages so that I can make ues of react router`loading state` and show the users loading indicator
+- Make use of redux or something like it to share data and save network requests round trips
