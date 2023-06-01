@@ -1,9 +1,9 @@
 import { LocationsGridList } from "./components/LocationGridList/LocationGridList";
 import { LocationsHeader } from "./components/LocationHeader";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { useBrowserStorage } from "../../hooks/useBrowserStorage";
 
 const Locations = () => {
-  const [savedLocations, setSavedLocations] = useLocalStorage(
+  const [savedLocations, setSavedLocations] = useBrowserStorage(
     "saveLocations",
     []
   );
