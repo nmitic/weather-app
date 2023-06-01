@@ -7,7 +7,6 @@ import { Rain } from "../../icons/weather_icons/animated/rain";
 import { Header } from "./components/Header";
 import { MainWeatherInfo } from "./components/MainWeatherInfo";
 import { MetaWeatherInfo } from "./components/MetaWeatherInfo";
-import { Forecast } from "./components/Forecast/Forecast";
 
 export const DESC_TO_ICON_MAP = {
   Thunderstorm,
