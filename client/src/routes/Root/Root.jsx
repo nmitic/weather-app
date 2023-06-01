@@ -19,14 +19,28 @@ export const rootLoader = async () => {
           `http://localhost:3001/weather?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
         )
       )
-      .then((response) => response.json()),
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(
+          "Seems like we have some troubles retrieving data at this moment"
+        );
+      }),
 
     forecastWeather: position
       .then((position) => position.coords)
       .then((cords) =>
         fetch(
           `http://localhost:3001/forecast?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
-        ).then((response) => response.json())
+        ).then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error(
+            "Seems like we have some troubles retrieving data at this moment"
+          );
+        })
       ),
   });
 };
@@ -34,7 +48,17 @@ export const rootLoader = async () => {
 const Error = () => {
   const error = useAsyncError();
 
-  return <div>{error.message}</div>;
+  return (
+    <div>
+      <button
+        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+        onClick={() => window.location.reload()}
+      >
+        Try Again
+      </button>
+      {error.message}
+    </div>
+  );
 };
 
 const Root = () => {
