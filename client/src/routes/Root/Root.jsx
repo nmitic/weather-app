@@ -17,8 +17,7 @@ export const rootLoader = async () => {
           `http://localhost:3001/weather?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
         )
       )
-      .then((response) => response.json())
-      .catch((error) => console.log(error)),
+      .then((response) => response.json()),
   });
 };
 
