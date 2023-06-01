@@ -44,7 +44,7 @@ export const LocationWeatherView = ({
     ? DESC_TO_ICON_MAP[main]
     : Clear;
   return (
-    <div className="px-7 max-w-3xl m-auto">
+    <>
       <Header city={city} country={country} date={date} />
       <MainWeatherInfo
         temperature={temperature}
@@ -52,6 +52,6 @@ export const LocationWeatherView = ({
         description={description}
       />
       <MetaWeatherInfo wind={wind} humidity={humidity} pressure={pressure} />
-    </div>
+    </>
   );
 };

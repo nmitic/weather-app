@@ -20,7 +20,7 @@ const LocationDetail = () => {
   const data = useLoaderData();
 
   return (
-    <>
+    <div className="px-7 max-w-3xl m-auto">
       <React.Suspense
         fallback={<p>Loading current weather location data...</p>}
       >
@@ -42,7 +42,7 @@ const LocationDetail = () => {
           {(forecastWeather) => <Forecast forecastData={forecastWeather} />}
         </Await>
       </React.Suspense>
-    </>
+    </div>
   );
 };
 
