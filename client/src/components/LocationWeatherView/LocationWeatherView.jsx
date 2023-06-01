@@ -53,7 +53,6 @@ export const LocationWeatherView = ({
         description={description}
       />
       <MetaWeatherInfo wind={wind} humidity={humidity} pressure={pressure} />
-      <Forecast location={city} />
     </div>
   );
 };

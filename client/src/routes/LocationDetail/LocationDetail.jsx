@@ -1,27 +1,49 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Await, defer } from "react-router-dom";
+import React from "react";
+
 import { LocationWeatherView } from "../../components/LocationWeatherView/LocationWeatherView";
+import { Forecast } from "../../components/LocationWeatherView/components/Forecast/Forecast";
 
 export const LocationDetailLoader = async ({ params }) => {
-  try {
-    const weatherDataResponse = await fetch(
+  return defer({
+    currentWeather: fetch(
       `http://localhost:3001/weather?q=${params.locationName}&units=metric`
-    );
-    if (!weatherDataResponse.ok) {
-      const weatherDataError = await weatherDataResponse.json();
-      throw new Error(weatherDataError.error);
-    }
-    const weatherData = await weatherDataResponse.json();
+    ).then((response) => response.json()),
 
-    return weatherData;
-  } catch (error) {
-    console.log(error.message);
-  }
+    forecastWeather: fetch(
+      `http://localhost:3001/forecast?q=${params.locationName}&units=metric`
+    ).then((response) => response.json()),
+  });
 };
 
 const LocationDetail = () => {
-  const weatherData = useLoaderData();
+  const data = useLoaderData();
 
-  return <LocationWeatherView weatherData={weatherData} />;
+  return (
+    <>
+      <React.Suspense
+        fallback={<p>Loading current weather location data...</p>}
+      >
+        <Await
+          resolve={data.currentWeather}
+          errorElement={<p>Error loading weatherData!</p>}
+        >
+          {(currentWeather) => (
+            <LocationWeatherView weatherData={currentWeather} />
+          )}
+        </Await>
+      </React.Suspense>
+
+      <React.Suspense fallback={<p>Loading forecastWeather...</p>}>
+        <Await
+          resolve={data.forecastWeather}
+          errorElement={<p>Error loading forecastWeather!</p>}
+        >
+          {(forecastWeather) => <Forecast forecastData={forecastWeather} />}
+        </Await>
+      </React.Suspense>
+    </>
+  );
 };
 
 export default LocationDetail;
