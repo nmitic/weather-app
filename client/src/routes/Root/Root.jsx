@@ -1,4 +1,4 @@
-import { useLoaderData, Await, defer } from "react-router-dom";
+import { useLoaderData, Await, defer, useAsyncError } from "react-router-dom";
 import { LocationWeatherView } from "../../components/LocationWeatherView/LocationWeatherView";
 import { Forecast } from "../../components/LocationWeatherView/components/Forecast/Forecast";
 import React from "react";
@@ -31,6 +31,12 @@ export const rootLoader = async () => {
   });
 };
 
+const Error = () => {
+  const error = useAsyncError();
+
+  return <div>{error.message}</div>;
+};
+
 const Root = () => {
   const data = useLoaderData();
 
@@ -39,10 +45,7 @@ const Root = () => {
       <React.Suspense
         fallback={<p>Loading current weather location data...</p>}
       >
-        <Await
-          resolve={data.currentWeather}
-          errorElement={<p>Error loading weatherData!</p>}
-        >
+        <Await resolve={data.currentWeather} errorElement={<Error />}>
           {(currentWeather) => (
             <LocationWeatherView weatherData={currentWeather} />
           )}
@@ -50,10 +53,7 @@ const Root = () => {
       </React.Suspense>
 
       <React.Suspense fallback={<p>Loading forecastWeather...</p>}>
-        <Await
-          resolve={data.forecastWeather}
-          errorElement={<p>Error loading forecastWeather!</p>}
-        >
+        <Await resolve={data.forecastWeather} errorElement={<Error />}>
           {(forecastWeather) => <Forecast forecastData={forecastWeather} />}
         </Await>
       </React.Suspense>
