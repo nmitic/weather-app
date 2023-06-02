@@ -77,6 +77,7 @@ export const LocationItem = ({
         >
           <input
             defaultValue={location.name}
+            onBlur={() => setEditMode(false)}
             autoFocus
             type="text"
             name="location"

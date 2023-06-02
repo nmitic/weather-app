@@ -35,6 +35,7 @@ export const AddNewLocationItem = ({ setSavedLocations, savedLocations }) => {
           >
             <input
               data-testid="input"
+              onBlur={() => setInputShown(false)}
               autoFocus
               type="text"
               name="location"
