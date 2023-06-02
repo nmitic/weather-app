@@ -23,10 +23,12 @@ export const rootLoader = async () => {
         if (response.ok) {
           return response.json();
         }
+        console.log("response not ok");
         throw new Error(
           "Seems like we have some troubles retrieving data at this moment"
         );
-      }),
+      })
+      .catch((error) => console.log(error.message)),
 
     forecastWeather: position
       .then((position) => position.coords)
@@ -45,7 +47,7 @@ export const rootLoader = async () => {
   });
 };
 
-const Error = () => {
+const ErrorMsg = () => {
   const error = useAsyncError();
 
   return (
@@ -63,24 +65,24 @@ const Error = () => {
 
 const SkeletonWeather = () => {
   return (
-    <div role="status" class="animate-pulse mb-5">
+    <div role="status" className="animate-pulse mb-5">
       <div className="flex justify-between">
-        <div class=" h-8 w-20 bg-gray-300 rounded-lg"></div>
-        <div class=" h-8 w-8 bg-gray-300 rounded-lg"></div>
+        <div className=" h-8 w-20 bg-gray-300 rounded-lg"></div>
+        <div className=" h-8 w-8 bg-gray-300 rounded-lg"></div>
       </div>
       <div className="flex flex-col items-center py-36">
-        <div class="h-32 w-32 bg-gray-300 rounded-lg mb-4"></div>
-        <div class="h-20 w-20 bg-gray-300 rounded-lg mb-4"></div>
-        <div class="h-8 w-20 bg-gray-300 rounded-lg mb-4"></div>
+        <div className="h-32 w-32 bg-gray-300 rounded-lg mb-4"></div>
+        <div className="h-20 w-20 bg-gray-300 rounded-lg mb-4"></div>
+        <div className="h-8 w-20 bg-gray-300 rounded-lg mb-4"></div>
       </div>
-      <div class=" h-16 w-full bg-gray-300 rounded-lg"></div>
+      <div className=" h-16 w-full bg-gray-300 rounded-lg"></div>
     </div>
   );
 };
 
 const SkeletonForecast = () => {
   return (
-    <div role="status" class="animate-pulse">
+    <div role="status" className="animate-pulse">
       <div className="flex justify-around flex-wrap">
         {[...new Array(8)].map(() => {
           return (
@@ -138,7 +140,7 @@ const Root = () => {
   return (
     <div className="px-7 max-w-3xl m-auto">
       <React.Suspense fallback={<SkeletonWeather />}>
-        <Await resolve={data.currentWeather} errorElement={<Error />}>
+        <Await resolve={data.currentWeather} errorElement={<ErrorMsg />}>
           {(currentWeather) => (
             <LocationWeatherView weatherData={currentWeather} />
           )}
@@ -146,7 +148,7 @@ const Root = () => {
       </React.Suspense>
 
       <React.Suspense fallback={<SkeletonForecast />}>
-        <Await resolve={data.forecastWeather} errorElement={<Error />}>
+        <Await resolve={data.forecastWeather} errorElement={<ErrorMsg />}>
           {(forecastWeather) => <Forecast forecastData={forecastWeather} />}
         </Await>
       </React.Suspense>
