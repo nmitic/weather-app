@@ -1,18 +1,38 @@
 import { useLoaderData, Await, defer } from "react-router-dom";
 import React from "react";
 
-import { LocationWeatherView } from "../../components/LocationWeatherView/LocationWeatherView";
-import { Forecast } from "../../components/LocationWeatherView/components/Forecast/Forecast";
+import {
+  LocationWeatherView,
+  SkeletonWeather,
+} from "../../components/LocationWeatherView/LocationWeatherView";
+import {
+  Forecast,
+  SkeletonForecast,
+} from "../../components/LocationWeatherView/components/Forecast/Forecast";
 
 export const LocationDetailLoader = async ({ params }) => {
   return defer({
     currentWeather: fetch(
       `http://localhost:3001/weather?q=${params.locationName}&units=metric`
-    ).then((response) => response.json()),
+    ).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(
+        "Seems like we have some troubles retrieving data at this moment"
+      );
+    }),
 
     forecastWeather: fetch(
       `http://localhost:3001/forecast?q=${params.locationName}&units=metric`
-    ).then((response) => response.json()),
+    ).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(
+        "Seems like we have some troubles retrieving data at this moment"
+      );
+    }),
   });
 };
 
@@ -21,9 +41,7 @@ const LocationDetail = () => {
 
   return (
     <div className="px-7 max-w-3xl m-auto">
-      <React.Suspense
-        fallback={<p>Loading current weather location data...</p>}
-      >
+      <React.Suspense fallback={<SkeletonWeather />}>
         <Await
           resolve={data.currentWeather}
           errorElement={<p>Error loading weatherData!</p>}
@@ -34,7 +52,7 @@ const LocationDetail = () => {
         </Await>
       </React.Suspense>
 
-      <React.Suspense fallback={<p>Loading forecastWeather...</p>}>
+      <React.Suspense fallback={<SkeletonForecast />}>
         <Await
           resolve={data.forecastWeather}
           errorElement={<p>Error loading forecastWeather!</p>}

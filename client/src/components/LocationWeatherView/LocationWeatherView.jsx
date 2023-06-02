@@ -55,3 +55,20 @@ export const LocationWeatherView = ({
     </>
   );
 };
+
+export const SkeletonWeather = () => {
+  return (
+    <div role="status" className="animate-pulse mb-5">
+      <div className="flex justify-between py-4 mb-10">
+        <div className=" h-8 w-20 bg-gray-300 rounded-lg"></div>
+        <div className=" h-8 w-8 bg-gray-300 rounded-lg"></div>
+      </div>
+      <div className="flex flex-col items-center">
+        <div className="h-32 w-32 bg-gray-300 rounded-lg mb-4"></div>
+        <div className="h-20 w-20 bg-gray-300 rounded-lg mb-4"></div>
+        <div className="h-8 w-20 bg-gray-300 rounded-lg mb-4"></div>
+      </div>
+      <div className=" h-16 w-full bg-gray-300 rounded-lg"></div>
+    </div>
+  );
+};

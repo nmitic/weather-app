@@ -1,6 +1,12 @@
 import { useLoaderData, Await, defer, useAsyncError } from "react-router-dom";
-import { LocationWeatherView } from "../../components/LocationWeatherView/LocationWeatherView";
-import { Forecast } from "../../components/LocationWeatherView/components/Forecast/Forecast";
+import {
+  LocationWeatherView,
+  SkeletonWeather,
+} from "../../components/LocationWeatherView/LocationWeatherView";
+import {
+  Forecast,
+  SkeletonForecast,
+} from "../../components/LocationWeatherView/components/Forecast/Forecast";
 import React from "react";
 
 const getPosition = () => {
@@ -23,12 +29,10 @@ export const rootLoader = async () => {
         if (response.ok) {
           return response.json();
         }
-        console.log("response not ok");
         throw new Error(
           "Seems like we have some troubles retrieving data at this moment"
         );
-      })
-      .catch((error) => console.log(error.message)),
+      }),
 
     forecastWeather: position
       .then((position) => position.coords)
@@ -59,77 +63,6 @@ const ErrorMsg = () => {
         Try Again
       </button>
       {error.message}
-    </div>
-  );
-};
-
-const SkeletonWeather = () => {
-  return (
-    <div role="status" className="animate-pulse mb-5">
-      <div className="flex justify-between">
-        <div className=" h-8 w-20 bg-gray-300 rounded-lg"></div>
-        <div className=" h-8 w-8 bg-gray-300 rounded-lg"></div>
-      </div>
-      <div className="flex flex-col items-center py-36">
-        <div className="h-32 w-32 bg-gray-300 rounded-lg mb-4"></div>
-        <div className="h-20 w-20 bg-gray-300 rounded-lg mb-4"></div>
-        <div className="h-8 w-20 bg-gray-300 rounded-lg mb-4"></div>
-      </div>
-      <div className=" h-16 w-full bg-gray-300 rounded-lg"></div>
-    </div>
-  );
-};
-
-const SkeletonForecast = () => {
-  return (
-    <div role="status" className="animate-pulse">
-      <div className="flex justify-around flex-wrap">
-        {[...new Array(8)].map(() => {
-          return (
-            <div className="flex items-center flex-col mb-4">
-              <div className=" h-4 w-20 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-8 w-8 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-6 w-6 bg-gray-300 rounded-lg"></div>
-            </div>
-          );
-        })}
-        {[...new Array(8)].map(() => {
-          return (
-            <div className="flex items-center flex-col mb-4">
-              <div className=" h-4 w-20 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-8 w-8 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-6 w-6 bg-gray-300 rounded-lg"></div>
-            </div>
-          );
-        })}
-        {[...new Array(8)].map(() => {
-          return (
-            <div className="flex items-center flex-col mb-4">
-              <div className=" h-4 w-20 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-8 w-8 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-6 w-6 bg-gray-300 rounded-lg"></div>
-            </div>
-          );
-        })}
-        {[...new Array(8)].map(() => {
-          return (
-            <div className="flex items-center flex-col mb-4">
-              <div className=" h-4 w-20 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-8 w-8 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-6 w-6 bg-gray-300 rounded-lg"></div>
-            </div>
-          );
-        })}
-        {[...new Array(8)].map(() => {
-          return (
-            <div className="flex items-center flex-col mb-4">
-              <div className=" h-4 w-20 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-8 w-8 bg-gray-300 rounded-lg mb-4"></div>
-              <div className=" h-6 w-6 bg-gray-300 rounded-lg"></div>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };
