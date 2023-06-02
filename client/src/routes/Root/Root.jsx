@@ -1,4 +1,6 @@
-import { useLoaderData, Await, defer, useAsyncError } from "react-router-dom";
+import React from "react";
+import { useLoaderData, Await, defer } from "react-router-dom";
+import { AsyncErrorMessage } from "../../components/AsyncErrorMessage";
 import {
   LocationWeatherView,
   SkeletonWeather,
@@ -7,7 +9,6 @@ import {
   Forecast,
   SkeletonForecast,
 } from "../../components/LocationWeatherView/components/Forecast/Forecast";
-import React from "react";
 
 const getPosition = () => {
   return new Promise((resolve, reject) => {
@@ -16,9 +17,8 @@ const getPosition = () => {
 };
 
 export const rootLoader = async () => {
-  const position = getPosition();
   return defer({
-    currentWeather: position
+    currentWeather: getPosition()
       .then((position) => position.coords)
       .then((cords) =>
         fetch(
@@ -34,7 +34,7 @@ export const rootLoader = async () => {
         );
       }),
 
-    forecastWeather: position
+    forecastWeather: getPosition()
       .then((position) => position.coords)
       .then((cords) =>
         fetch(
@@ -51,29 +51,16 @@ export const rootLoader = async () => {
   });
 };
 
-const ErrorMsg = () => {
-  const error = useAsyncError();
-
-  return (
-    <div>
-      <button
-        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-        onClick={() => window.location.reload()}
-      >
-        Try Again
-      </button>
-      {error.message}
-    </div>
-  );
-};
-
 const Root = () => {
   const data = useLoaderData();
 
   return (
     <div className="px-7 max-w-3xl m-auto">
       <React.Suspense fallback={<SkeletonWeather />}>
-        <Await resolve={data.currentWeather} errorElement={<ErrorMsg />}>
+        <Await
+          resolve={data.currentWeather}
+          errorElement={<AsyncErrorMessage />}
+        >
           {(currentWeather) => (
             <LocationWeatherView weatherData={currentWeather} />
           )}
@@ -81,7 +68,10 @@ const Root = () => {
       </React.Suspense>
 
       <React.Suspense fallback={<SkeletonForecast />}>
-        <Await resolve={data.forecastWeather} errorElement={<ErrorMsg />}>
+        <Await
+          resolve={data.forecastWeather}
+          errorElement={<AsyncErrorMessage />}
+        >
           {(forecastWeather) => <Forecast forecastData={forecastWeather} />}
         </Await>
       </React.Suspense>

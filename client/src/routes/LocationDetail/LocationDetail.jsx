@@ -1,6 +1,7 @@
-import { useLoaderData, Await, defer } from "react-router-dom";
 import React from "react";
+import { useLoaderData, Await, defer } from "react-router-dom";
 
+import { AsyncErrorMessage } from "../../components/AsyncErrorMessage";
 import {
   LocationWeatherView,
   SkeletonWeather,
@@ -44,7 +45,7 @@ const LocationDetail = () => {
       <React.Suspense fallback={<SkeletonWeather />}>
         <Await
           resolve={data.currentWeather}
-          errorElement={<p>Error loading weatherData!</p>}
+          errorElement={<AsyncErrorMessage />}
         >
           {(currentWeather) => (
             <LocationWeatherView weatherData={currentWeather} />
@@ -55,7 +56,7 @@ const LocationDetail = () => {
       <React.Suspense fallback={<SkeletonForecast />}>
         <Await
           resolve={data.forecastWeather}
-          errorElement={<p>Error loading forecastWeather!</p>}
+          errorElement={<AsyncErrorMessage />}
         >
           {(forecastWeather) => <Forecast forecastData={forecastWeather} />}
         </Await>
