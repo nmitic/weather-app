@@ -5,10 +5,7 @@ import {
   LocationWeatherView,
   SkeletonWeather,
 } from "../../components/LocationWeatherView/LocationWeatherView";
-import {
-  Forecast,
-  SkeletonForecast,
-} from "../../components/LocationWeatherView/components/Forecast/Forecast";
+import { Forecast, SkeletonForecast } from "../../components/Forecast/Forecast";
 
 const getPosition = () => {
   return new Promise((resolve, reject) => {

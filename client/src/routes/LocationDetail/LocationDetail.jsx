@@ -6,10 +6,7 @@ import {
   LocationWeatherView,
   SkeletonWeather,
 } from "../../components/LocationWeatherView/LocationWeatherView";
-import {
-  Forecast,
-  SkeletonForecast,
-} from "../../components/LocationWeatherView/components/Forecast/Forecast";
+import { Forecast, SkeletonForecast } from "../../components/Forecast/Forecast";
 
 export const LocationDetailLoader = async ({ params }) => {
   return defer({

@@ -1,5 +1,5 @@
-import { DESC_TO_ICON_MAP } from "../../../LocationWeatherView";
-import { Clear } from "../../../../../icons/weather_icons/animated/clear";
+import { DESC_TO_ICON_MAP } from "../../LocationWeatherView/LocationWeatherView";
+import { Clear } from "../../../icons/weather_icons/animated/clear";
 
 export const DayForecast = ({ day, forecastList }) => {
   return (
