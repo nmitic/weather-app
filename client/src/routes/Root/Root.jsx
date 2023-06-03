@@ -6,6 +6,7 @@ import {
   SkeletonWeather,
 } from "../../components/LocationWeatherView/LocationWeatherView";
 import { Forecast, SkeletonForecast } from "../../components/Forecast/Forecast";
+import { AirQuality } from "../../components/AirQuality";
 
 const getPosition = () => {
   return new Promise((resolve, reject) => {
@@ -76,6 +77,12 @@ const Root = () => {
           {(currentWeather) => (
             <LocationWeatherView weatherData={currentWeather} />
           )}
+        </Await>
+      </React.Suspense>
+
+      <React.Suspense fallback={<div>...loading airPollution</div>}>
+        <Await resolve={data.airPollution} errorElement={<AsyncErrorMessage />}>
+          {(airPollution) => <AirQuality airQualityData={airPollution} />}
         </Await>
       </React.Suspense>
 

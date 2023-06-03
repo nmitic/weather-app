@@ -90,7 +90,7 @@ const serializeForecastData = ({ list }) => {
 
 const serializeAirPollutionData = ({ list }) => {
   return {
-    airQuality: list?.[0].main.aqi,
+    airQualityIndex: list?.[0].main.aqi,
     components: list?.[0].components,
   };
 };
