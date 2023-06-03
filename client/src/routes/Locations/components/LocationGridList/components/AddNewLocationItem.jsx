@@ -16,7 +16,7 @@ export const AddNewLocationItem = ({ setSavedLocations, savedLocations }) => {
 
   return (
     <div
-      className="bg-white rounded-3xl p-4 text-left flex flex-col justify-between min-h-[160px]"
+      className="bg-white rounded-3xl p-4 text-left flex flex-col justify-between min-h-[160px] focus:scale-110 hover:scale-110 transition-transform"
       onClick={() => setInputShown(true)}
       onKeyUp={(event) => {
         if (event.key === "Enter") {
