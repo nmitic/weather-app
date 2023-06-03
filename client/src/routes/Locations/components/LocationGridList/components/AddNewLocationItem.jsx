@@ -14,14 +14,15 @@ export const AddNewLocationItem = ({ setSavedLocations, savedLocations }) => {
     setInputShown(false);
   };
 
-  const handleInputShow = () => {
-    setInputShown(true);
-  };
-
   return (
     <div
       className="bg-white rounded-3xl p-4 text-left flex flex-col justify-between min-h-[160px]"
-      onClick={() => handleInputShow()}
+      onClick={() => setInputShown(true)}
+      onKeyUp={(event) => {
+        if (event.key === "Enter") {
+          setInputShown(true);
+        }
+      }}
       role="button"
       tabIndex="0"
     >
