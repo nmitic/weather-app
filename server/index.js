@@ -14,6 +14,9 @@ const ENDPOINTS = {
   FORECAST: function (query) {
     return `https://api.openweathermap.org/data/2.5/forecast?l&appid=${WEATHER_APP_ID}&${query}`;
   },
+  AIR_POLLUTION: function (query) {
+    return `https://api.openweathermap.org/data/2.5/air_pollution?l&appid=${WEATHER_APP_ID}&${query}`;
+  },
 };
 const CLIENT_URL = "http://localhost:3000";
 
@@ -85,6 +88,13 @@ const serializeForecastData = ({ list }) => {
   );
 };
 
+const serializeAirPollutionData = ({ list }) => {
+  return {
+    airQuality: list?.[0].main.aqi,
+    components: list?.[0].components,
+  };
+};
+
 app.get("/weather", async (req, res, next) => {
   const qs = new URLSearchParams(req.query);
 
@@ -96,7 +106,7 @@ app.get("/weather", async (req, res, next) => {
       res.json(serializedWeatherData);
     } else {
       res
-        .status(parseInt(weatherData.cod))
+        .status(parseInt(weatherData?.cod))
         .json({ error: weatherData.message });
     }
   } catch (error) {
@@ -116,12 +126,23 @@ app.get("/forecast", async (req, res, next) => {
       res.json(serializedForecastData);
     } else {
       res
-        .status(parseInt(forecastData.cod))
+        .status(parseInt(forecastData?.cod))
         .json({ error: forecastData.message });
     }
   } catch (error) {
     next(error);
   }
+});
+
+app.get("/air_pollution", async (req, res, next) => {
+  const qs = new URLSearchParams(req.query);
+  const airPollutionDataResponse = await fetch(
+    ENDPOINTS.AIR_POLLUTION(qs.toString())
+  );
+  const airPollutionData = await airPollutionDataResponse.json();
+  const serializedAirPollutionData =
+    serializeAirPollutionData(airPollutionData);
+  res.json(serializedAirPollutionData);
 });
 
 app.listen(PORT, () => {

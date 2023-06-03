@@ -48,6 +48,21 @@ export const rootLoader = async () => {
           );
         })
       ),
+
+    airPollution: getPosition()
+      .then((position) => position.coords)
+      .then((cords) =>
+        fetch(
+          `http://localhost:3001/air_pollution?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
+        ).then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error(
+            "Seems like we have some troubles retrieving data at this moment"
+          );
+        })
+      ),
   });
 };
 
