@@ -7,6 +7,7 @@ import {
   SkeletonWeather,
 } from "../../components/LocationWeatherView/LocationWeatherView";
 import { Forecast, SkeletonForecast } from "../../components/Forecast/Forecast";
+import { AirQuality } from "../../components/AirQuality";
 
 export const LocationDetailLoader = async ({ params }) => {
   return defer({
@@ -31,6 +32,31 @@ export const LocationDetailLoader = async ({ params }) => {
         "Seems like we have some troubles retrieving data at this moment"
       );
     }),
+    airPollution: fetch(
+      `http://localhost:3001/geo?q=${params.locationName}&units=metric`
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(
+          "Seems like we have some troubles retrieving data at this moment"
+        );
+      })
+      .then((geoData) => {
+        const { lat, lon } = geoData?.[0];
+        return fetch(
+          `http://localhost:3001/air_pollution?lat=${lat}&lon=${lon}&units=metric`
+        );
+      })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(
+          "Seems like we have some troubles retrieving data at this moment"
+        );
+      }),
   });
 };
 
@@ -47,6 +73,12 @@ const LocationDetail = () => {
           {(currentWeather) => (
             <LocationWeatherView weatherData={currentWeather} />
           )}
+        </Await>
+      </React.Suspense>
+
+      <React.Suspense fallback={<div>...loading airPollution</div>}>
+        <Await resolve={data.airPollution} errorElement={<AsyncErrorMessage />}>
+          {(airPollution) => <AirQuality airQualityData={airPollution} />}
         </Await>
       </React.Suspense>
 

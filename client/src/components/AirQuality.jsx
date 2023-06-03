@@ -48,14 +48,14 @@ export const AirQuality = ({
       }}
       className="bg-current p-8 rounded-xl"
     >
-      <Icon className="w-12 mb-4" />
-      <p className="text-3xl mb-4 text-gray-600">{text}</p>
+      <Icon className="w-12 mb-4 inline-block mr-4" />
+      <p className="text-3xl mb-4 text-gray-600 inline-block">{text}</p>
       <div className="flex md:justify-between flex-wrap">
         {Object.keys(components).map((item) => {
           return (
-            <div key={item} className="p-2 m-2 border">
-              <div className="text-2xl text-gray-600">{item}</div>
-              <div className="text-gray-100">{components[item]}</div>
+            <div key={item} className="p-2 m-2 border md:m-0">
+              <div className="text-3xl text-gray-600">{item}</div>
+              <div className="text-gray-600">{components[item]}</div>
             </div>
           );
         })}

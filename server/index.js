@@ -15,7 +15,10 @@ const ENDPOINTS = {
     return `https://api.openweathermap.org/data/2.5/forecast?l&appid=${WEATHER_APP_ID}&${query}`;
   },
   AIR_POLLUTION: function (query) {
-    return `https://api.openweathermap.org/data/2.5/air_pollution?l&appid=${WEATHER_APP_ID}&${query}`;
+    return `https://api.openweathermap.org/data/2.5/air_pollution?&appid=${WEATHER_APP_ID}&${query}`;
+  },
+  GEO_CODING: function (query) {
+    return `http://api.openweathermap.org/geo/1.0/direct?&appid=${WEATHER_APP_ID}&${query}}`;
   },
 };
 const CLIENT_URL = "http://localhost:3000";
@@ -143,6 +146,14 @@ app.get("/air_pollution", async (req, res, next) => {
   const serializedAirPollutionData =
     serializeAirPollutionData(airPollutionData);
   res.json(serializedAirPollutionData);
+});
+
+app.get("/geo", async (req, res, next) => {
+  const qs = new URLSearchParams(req.query);
+  const geoDataResponse = await fetch(ENDPOINTS.GEO_CODING(qs.toString()));
+  const geoData = await geoDataResponse.json();
+
+  res.json(geoData);
 });
 
 app.listen(PORT, () => {
