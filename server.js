@@ -1,11 +1,21 @@
-const express = require("express");
-const cors = require("cors");
+import path from "path";
+import {
+  serializeAirPollutionData,
+  serializeForecastData,
+  serializeWeatherData,
+} from "./data-serializers.js";
+
+import express from "express";
+import cors from "cors";
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 
 const WEATHER_APP_ID = "d780a5117de2228e0d4e559b2dc0bd60";
+
+// client build path
+const buildPath = path.join(path.resolve(), "build");
 
 const ENDPOINTS = {
   WEATHER: function (query) {
@@ -21,82 +31,15 @@ const ENDPOINTS = {
     return `http://api.openweathermap.org/geo/1.0/direct?&appid=${WEATHER_APP_ID}&${query}}`;
   },
 };
-const CLIENT_URL = "http://localhost:3000";
 
-const whitelist = [CLIENT_URL];
+app.use(express.static(buildPath));
+app.use(express.json());
+app.use(cors());
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-app.use(cors(corsOptions));
-
-const serializeWeatherData = ({ main, sys, wind, weather, name, id }) => {
-  const currentDate = new Date();
-
-  // Get only the needed data for the UI to render
-  return {
-    id,
-    city: name,
-    country: sys.country,
-    temperature: `${Math.round(main.temp, 10)}°`,
-    humidity: `${main.humidity}%`,
-    pressure: `${main.pressure}hPa`,
-    wind: `${wind.speed}km/h`,
-    description: weather[0].description,
-    main: weather[0].main,
-    date: currentDate.toLocaleString("en-US", {
-      weekday: "short",
-      day: "2-digit",
-      month: "short",
-    }),
-  };
-};
-
-const serializeForecastData = ({ list }) => {
-  return (
-    list
-      // Get only the needed data for the UI to render
-      .map((item) => {
-        return {
-          temperature: `${Math.round(item.main.temp, 10)}`,
-          main: item.weather[0].main,
-          day: new Date(item.dt_txt).toLocaleString("en-US", {
-            weekday: "short",
-            day: "2-digit",
-            month: "short",
-          }),
-          hour: new Date(item.dt_txt).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        };
-      })
-      // Group data based on the same day in order for data shape to reflect the rendered UI
-      .reduce((result, item) => {
-        const value = item.day;
-        if (result.hasOwnProperty(value)) {
-          result[value].push(item);
-        } else {
-          result[value] = [item];
-        }
-        return result;
-      }, {})
-  );
-};
-
-const serializeAirPollutionData = ({ list }) => {
-  return {
-    airQualityIndex: list?.[0].main.aqi,
-    components: list?.[0].components,
-  };
-};
+// gets the static files from the build folder
+app.get("/", (req, res) => {
+  res.sendFile(path.join(buildPath, "index.html"));
+});
 
 app.get("/weather", async (req, res, next) => {
   const qs = new URLSearchParams(req.query);
