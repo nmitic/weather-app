@@ -19,7 +19,7 @@ export const LocationItem = ({
   const fetchWeatherData = useCallback(async (location) => {
     try {
       const weatherDataResponse = await fetch(
-        `http://localhost:3001/weather?q=${location}&units=metric`
+        `${process.env.REACT_APP_HOST_URL}/weather?q=${location}&units=metric`
       );
 
       if (!weatherDataResponse.ok) {

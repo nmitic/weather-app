@@ -1,11 +1,4 @@
-export const serializeWeatherData = ({
-  main,
-  sys,
-  wind,
-  weather,
-  name,
-  id,
-}) => {
+const serializeWeatherData = ({ main, sys, wind, weather, name, id }) => {
   const currentDate = new Date();
 
   // Get only the needed data for the UI to render
@@ -27,7 +20,7 @@ export const serializeWeatherData = ({
   };
 };
 
-export const serializeForecastData = ({ list }) => {
+const serializeForecastData = ({ list }) => {
   return (
     list
       // Get only the needed data for the UI to render
@@ -59,9 +52,13 @@ export const serializeForecastData = ({ list }) => {
   );
 };
 
-export const serializeAirPollutionData = ({ list }) => {
+const serializeAirPollutionData = ({ list }) => {
   return {
     airQualityIndex: list?.[0].main.aqi,
     components: list?.[0].components,
   };
 };
+
+exports.serializeAirPollutionData = serializeAirPollutionData;
+exports.serializeForecastData = serializeForecastData;
+exports.serializeWeatherData = serializeWeatherData;

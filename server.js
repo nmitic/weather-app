@@ -1,12 +1,12 @@
-import path from "path";
-import {
+const path = require("path");
+const {
   serializeAirPollutionData,
   serializeForecastData,
   serializeWeatherData,
-} from "./data-serializers.js";
+} = require("./data-serializers.js");
 
-import express from "express";
-import cors from "cors";
+const express = require("express");
+const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
 

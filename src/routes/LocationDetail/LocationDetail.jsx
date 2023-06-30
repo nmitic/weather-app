@@ -12,7 +12,7 @@ import { AirQuality } from "../../components/AirQuality";
 export const LocationDetailLoader = async ({ params }) => {
   return defer({
     currentWeather: fetch(
-      `http://localhost:3001/weather?q=${params.locationName}&units=metric`
+      `${process.env.REACT_APP_HOST_URL}/weather?q=${params.locationName}&units=metric`
     ).then((response) => {
       if (response.ok) {
         return response.json();
@@ -23,7 +23,7 @@ export const LocationDetailLoader = async ({ params }) => {
     }),
 
     forecastWeather: fetch(
-      `http://localhost:3001/forecast?q=${params.locationName}&units=metric`
+      `${process.env.REACT_APP_HOST_URL}/forecast?q=${params.locationName}&units=metric`
     ).then((response) => {
       if (response.ok) {
         return response.json();
@@ -33,7 +33,7 @@ export const LocationDetailLoader = async ({ params }) => {
       );
     }),
     airPollution: fetch(
-      `http://localhost:3001/geo?q=${params.locationName}&units=metric`
+      `${process.env.REACT_APP_HOST_URL}/geo?q=${params.locationName}&units=metric`
     )
       .then((response) => {
         if (response.ok) {
@@ -46,7 +46,7 @@ export const LocationDetailLoader = async ({ params }) => {
       .then((geoData) => {
         const { lat, lon } = geoData?.[0];
         return fetch(
-          `http://localhost:3001/air_pollution?lat=${lat}&lon=${lon}&units=metric`
+          `${process.env.REACT_APP_HOST_URL}/air_pollution?lat=${lat}&lon=${lon}&units=metric`
         );
       })
       .then((response) => {

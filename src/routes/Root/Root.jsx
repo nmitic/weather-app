@@ -20,7 +20,7 @@ export const rootLoader = async () => {
       .then((position) => position.coords)
       .then((cords) =>
         fetch(
-          `http://localhost:3001/weather?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
+          `${process.env.REACT_APP_HOST_URL}/weather?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
         )
       )
       .then((response) => {
@@ -36,7 +36,7 @@ export const rootLoader = async () => {
       .then((position) => position.coords)
       .then((cords) =>
         fetch(
-          `http://localhost:3001/forecast?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
+          `${process.env.REACT_APP_HOST_URL}/forecast?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
         ).then((response) => {
           if (response.ok) {
             return response.json();
@@ -51,7 +51,7 @@ export const rootLoader = async () => {
       .then((position) => position.coords)
       .then((cords) =>
         fetch(
-          `http://localhost:3001/air_pollution?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
+          `${process.env.REACT_APP_HOST_URL}/air_pollution?lat=${cords.latitude}&lon=${cords.longitude}&units=metric`
         ).then((response) => {
           if (response.ok) {
             return response.json();
